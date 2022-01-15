@@ -8,6 +8,8 @@ namespace algo_studies
 {
 	public class BFS
 	{
+	
+			
 		public List<List<char>> Map { get; set; }
 		public Dictionary<(int, int), Cell> grid = new Dictionary<(int, int), Cell>();
 		HashSet<(int, int)> VisitedCells = new HashSet<(int, int)>();
@@ -29,17 +31,11 @@ namespace algo_studies
 
 					if (Map[i][j] == ' ')
 					{
+						int[] origin = { -1, -1 };
 						grid.Add((i, j), new Cell(i, j));
 					}
 				}
 			}
-		}
-
-
-		// TODO Modify
-		private bool IsTargetReached(Cell currentPosition, Cell destination)
-		{
-			return currentPosition.IsSamePos(destination);
 		}
 
 
@@ -52,53 +48,26 @@ namespace algo_studies
 				return;
 			}
 
-
 			ToBeVisitedCells.Enqueue(startingPosition);
-			List<Cell> Shortestpath = new();
 
 			while (ToBeVisitedCells.Count > 0)
 			{
 				(int, int) currentPosition = ToBeVisitedCells.Dequeue();
-
-				if (currentPosition.Equals(destination))
+				if (IsSuccess(currentPosition, destination))
 				{
-					Console.WriteLine("Target Found");
-					Console.WriteLine("Shortest path is: ");
-					List<(int, int)> ShortestPath = new List<(int, int)>();
-
-					ShortestPath.Add(currentPosition);
-
-					while (grid[currentPosition].prev != (-1, -1))
-					{
-						ShortestPath.Add(grid[currentPosition].prev);
-						currentPosition = grid[currentPosition].prev;
-					}
-
-
-					Console.WriteLine(currentPosition);
-
-					foreach ((int, int) coord in ShortestPath.Reverse<(int, int)>())
-					{
-						Console.Write($"({coord.Item1},{coord.Item2})");
-					}
-
-
-					DrawMap(ShortestPath);
+					List<(int, int)> path = GetPath(currentPosition);
+					DrawPath(path);
 					return;
 				}
+				
 
 				VisitedCells.Add(currentPosition);
 
 				CheckNeighbours(currentPosition);
 
 
-
 			}
-
-			Console.WriteLine("Target nor found");
-
-
-
+			Console.WriteLine("Target not found.");
 		}
 
 		private void CheckNeighbours((int, int) currentCell)
@@ -113,40 +82,67 @@ namespace algo_studies
 			foreach ((int, int) neighbour in neightbours)
 			{
 				if (grid.ContainsKey(neighbour)
-				&& !VisitedCells.Contains(neighbour))
+				&& !VisitedCells.Contains(neighbour)  
+				&& !ToBeVisitedCells.Contains(neighbour))
 				{
 					ToBeVisitedCells.Enqueue(neighbour);
 					grid[neighbour].prev = currentCell;
+	
 				}
 			}
 
 		}
 
-		public void DrawMap(List<(int, int)> path)
+		private bool IsSuccess((int, int) currentPosition, (int,int) destination)
 		{
-			Console.Read();
+			return currentPosition.Equals(destination);
+		}
+
+		private List<(int, int)> GetPath((int, int) currentPosition)
+		{
+			List<(int, int)> shortestPath = new List<(int, int)>();
+
+			shortestPath.Add(currentPosition);
+
+			while (grid[currentPosition].prev != (-1, -1))
+			{
+				shortestPath.Add(grid[currentPosition].prev);
+				currentPosition = grid[currentPosition].prev;
+			}
+
+			return shortestPath;
+		} 
+
+		public void DrawPath(List<(int, int)> path)
+		{
+			//Console.Read();
 
 			foreach ((int, int) c in path.Reverse<(int, int)>())
 			{
-				Console.Clear();
+				//Console.Clear();
+	
 				Map[c.Item1][c.Item2] = '0';
-				Console.WriteLine();
-				for (int i = 0; i < Map.Count; i++)
-				{
-					for (int j = 0; j < Map[i].Count; j++)
-					{
-						Console.Write(Map[i][j]);
-					}
-					Console.WriteLine();
-
-				}
-				//Console.Read();
-				Thread.Sleep(25);
+				
 
 			}
-			Console.Read();
-
-
+			//Console.Read();
+			for (int i = 0; i < Map.Count; i++)
+			{
+				for (int j = 0; j < Map[i].Count; j++)
+				{
+					if (Map[i][j] == '0')
+					{
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.Write(Map[i][j]);
+					}
+					else
+					{
+						Console.ForegroundColor = ConsoleColor.Cyan;
+						Console.Write(Map[i][j]);
+					}
+				}
+				Console.WriteLine();
+			}
 		}
 	}
 }

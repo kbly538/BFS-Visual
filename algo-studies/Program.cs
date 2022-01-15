@@ -2,7 +2,6 @@
 
 string mapFilePath = @"D:\kbly538\source\repos\algo-studies\algo-studies\Maps\mapFile.txt";
 MapLoader mapLoader = new MapLoader(mapFilePath);
-mapLoader.DrawMap();
 
 
 //foreach (KeyValuePair<Tuple<int, int>, Cell> keyValuePair in grid)
@@ -15,7 +14,7 @@ mapLoader.DrawMap();
 
 BFS bfs = new BFS(mapLoader);
 
-bfs.StartBFS((1, 1), (11, 1));
+bfs.StartBFS((1, 1), (262, 1));
 
 
 
