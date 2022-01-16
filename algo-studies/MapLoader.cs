@@ -8,8 +8,13 @@ namespace algo_studies
 {
 	public class MapLoader
 	{
+		
 		public char[,] Map { get; set; }
 
+		/// <summary>
+		/// Reads the text file and assign every char to the corresponding row, column.
+		/// </summary>
+		/// <param name="filePath">Path for the text file to be loaded.</param>
 		public MapLoader(string filePath)
 		{
 			
@@ -29,7 +34,9 @@ namespace algo_studies
 			}
 
 		}
-
+		/// <summary>
+		/// Draws the map on the console.
+		/// </summary>
 		public void DrawMap()
 		{
 			for (int i = 0; i < Map.GetLength(0); i++)

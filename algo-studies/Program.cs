@@ -2,10 +2,6 @@
 using System.Drawing;
 
 
-
-
-
-
 String rootPath = @"D:\kbly538\source\repos\algo-studies\algo-studies\Maps\";
 String textFileName = "starMap.txt";
 String imageName = "hand-drawn-map.png";
