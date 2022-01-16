@@ -5,57 +5,47 @@ namespace algo_studies
 	public class BitmapMapLoader
 	{
 
-		private string imageFilePath { get; }
-		private Bitmap image { get; set; }
-		private char[,] imageArray { get; }
+		private string ImageFilePath { get; }
+		private Bitmap Image { get; set; }
+		private char[,] ImageArray { get; set; }
 
 		public BitmapMapLoader(string imageFilePath)
 		{
-			this.imageFilePath = imageFilePath;
-			LoadImage();
-			this.imageArray = new char[image.Height, image.Width];
+			this.ImageFilePath = imageFilePath;
+			Image = LoadImage();
+			ImageArray = CreateImageArray(Image);
+
 		}
 
 		public char[,] GetMap()
 		{
-			return imageArray;
+			return ImageArray;
 		}
 
 		private Bitmap LoadImage()
 		{
-			try
-			{
-				return image = new(imageFilePath);
-			}
-			catch (FileNotFoundException e)
-			{
-				Console.WriteLine(e.Message);
-				//return null;
-				
-			}
-			Environment.Exit(-1);
-			return null;
+			return new Bitmap(ImageFilePath);
 		}
 
 		public void CreateMapFile(String outFilePath)
 		{
 			using (StreamWriter writer = new StreamWriter(outFilePath))
 			{
-				for (int j = 0; j < image.Height; j++)
+				for (int j = 0; j < Image.Height; j++)
 				{
 					
-					for (int i = 0; i < image.Width; i++)
+					for (int i = 0; i < Image.Width; i++)
 					{
-						Color pxColor = image.GetPixel(i, j);
+						Color pxColor = Image.GetPixel(i, j);
 						if (CalculateColorValue(pxColor) <= 190)
 						{
-							imageArray[j,i] = '#';
-							writer.Write(imageArray[j,i]);
+							ImageArray[j,i] = '#';
+							writer.Write(ImageArray[j,i]);
 						}
 						else
 						{
-							imageArray[j,i] = ' ';
-							writer.Write(imageArray[j,i]);
+							ImageArray[j,i] = ' ';
+							writer.Write(ImageArray[j,i]);
 						}
 					}
 					writer.Write('\n');
@@ -66,6 +56,16 @@ namespace algo_studies
 		private int CalculateColorValue(Color color) { 
 			
 			return (int)(color.R + color.G + color.B) / 3;
+		}
+
+		private char[,] CreateImageArray(Bitmap image)
+		{
+			if (image == null)
+			{
+				Console.WriteLine("Image not found.");
+				throw new ArgumentNullException("Image not found.");
+			}
+			return new char[image.Height, image.Width];
 		}
 	}
 }

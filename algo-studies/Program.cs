@@ -8,7 +8,7 @@ using System.Drawing;
 
 String rootPath = @"D:\kbly538\source\repos\algo-studies\algo-studies\Maps\";
 String textFileName = "starMap.txt";
-String imageName = "hand-drawn-map.png";
+String imageName = "hand-drawn-mp.png";
 
 String fullPthToText = rootPath + textFileName;
 String fullPathToImage = rootPath + imageName;
