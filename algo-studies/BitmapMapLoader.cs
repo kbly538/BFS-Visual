@@ -17,9 +17,14 @@ namespace algo_studies
 
 		}
 
-		internal char[,] GetMap()
+		public char[,] GetMap()
 		{
 			return ImageArray;
+		}
+
+		private Bitmap LoadImage()
+		{
+			return new Bitmap(ImageFilePath);
 		}
 
 		public void CreateMapFile(String outFilePath)
@@ -61,11 +66,6 @@ namespace algo_studies
 				throw new ArgumentNullException("Image not found.");
 			}
 			return new char[image.Height, image.Width];
-		}
-		
-		private Bitmap LoadImage()
-		{
-			return new Bitmap(ImageFilePath);
 		}
 	}
 }
