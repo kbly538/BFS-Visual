@@ -8,31 +8,35 @@ namespace algo_studies
 {
 	public class MapLoader
 	{
-		public List<List<char>> Map { get; set; }
+		public char[,] Map { get; set; }
 
 		public MapLoader(string filePath)
 		{
-			List<List<char>> prepMap = new List<List<char>>();
+			
 
 			char[] mapData = File.ReadAllText(filePath).ToCharArray();
 
 			IEnumerable<String> mapFile = File.ReadLines(filePath);
-			foreach (string s in mapFile)
+			Map = new char[mapFile.Count(), mapData.Length / mapFile.Count()];
+
+
+			for (int i = 0; i < mapFile.Count(); i++)
 			{
-				prepMap.Add(s.ToList<char>());
+				for (int j = 0; j < mapFile.ElementAt(i).Length; j++)
+				{
+					Map[i, j] = mapFile.ElementAt(i)[j];
+				}
 			}
 
-
-			Map = prepMap;
 		}
 
 		public void DrawMap()
 		{
-			for (int i = 0; i < Map.Count; i++)
+			for (int i = 0; i < Map.GetLength(0); i++)
 			{
-				for (int j = 0; j < Map[i].Count; j++)
+				for (int j = 0; j < Map.GetLength(1); j++)
 				{
-					Console.Write(Map[i][j]);
+					Console.Write(Map[i,j]);
 				}
 
 				Console.WriteLine();

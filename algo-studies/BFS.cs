@@ -10,7 +10,7 @@ namespace algo_studies
 	{
 	
 			
-		public List<List<char>> Map { get; set; }
+		public char[,] Map { get; set; }
 		public Dictionary<(int, int), Cell> grid = new Dictionary<(int, int), Cell>();
 		HashSet<(int, int)> VisitedCells = new HashSet<(int, int)>();
 		Queue<(int, int)> ToBeVisitedCells = new Queue<(int, int)>();
@@ -22,14 +22,20 @@ namespace algo_studies
 			FillGrid();
 		}
 
+		public BFS(BitmapMapLoader bitmapMapLoader)
+		{
+			Map = bitmapMapLoader.GetMap();
+			FillGrid();
+		}
+
 		private void FillGrid()
 		{
-			for (int i = 0; i < Map.Count; i++)
+			for (int i = 0; i < Map.GetLength(0); i++)
 			{
-				for (int j = 0; j < Map[i].Count; j++)
+				for (int j = 0; j < Map.GetLength(1); j++)
 				{
 
-					if (Map[i][j] == ' ')
+					if (Map[i,j] == ' ')
 					{
 						int[] origin = { -1, -1 };
 						grid.Add((i, j), new Cell(i, j));
@@ -56,7 +62,7 @@ namespace algo_studies
 				if (IsSuccess(currentPosition, destination))
 				{
 					List<(int, int)> path = GetPath(currentPosition);
-					DrawPath(path);
+					DrawPath(path, startingPosition, destination);
 					return;
 				}
 				
@@ -113,7 +119,7 @@ namespace algo_studies
 			return shortestPath;
 		} 
 
-		public void DrawPath(List<(int, int)> path)
+		public void DrawPath(List<(int, int)> path, (int, int) startingPosition, (int, int) destination)
 		{
 			//Console.Read();
 
@@ -121,24 +127,33 @@ namespace algo_studies
 			{
 				//Console.Clear();
 	
-				Map[c.Item1][c.Item2] = '0';
+				Map[c.Item1,c.Item2] = '0';
 				
 
 			}
 			//Console.Read();
-			for (int i = 0; i < Map.Count; i++)
+			for (int i = 0; i < Map.GetLength(0); i++)
 			{
-				for (int j = 0; j < Map[i].Count; j++)
+				for (int j = 0; j < Map.GetLength(1); j++)
 				{
-					if (Map[i][j] == '0')
+					
+					if (Map[i,j] == '0' && grid.ContainsKey((i, j))
+						&&  (startingPosition.Equals((grid[(i, j)].x, grid[(i, j)].y))
+						||  destination.Equals((grid[(i, j)].x, grid[(i, j)].y))))
 					{
+						Console.ForegroundColor = ConsoleColor.Yellow;
+						Console.Write(Map[i,j]);
+					}
+					else if (Map[i,j] == '0')
+					{
+						
 						Console.ForegroundColor = ConsoleColor.Red;
-						Console.Write(Map[i][j]);
+						Console.Write(Map[i,j]);
 					}
 					else
 					{
-						Console.ForegroundColor = ConsoleColor.Cyan;
-						Console.Write(Map[i][j]);
+						Console.ForegroundColor= ConsoleColor.DarkGray;
+						Console.Write(Map[i,j]);
 					}
 				}
 				Console.WriteLine();

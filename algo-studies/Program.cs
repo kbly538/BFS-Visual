@@ -1,27 +1,39 @@
 ﻿using algo_studies;
-
-string mapFilePath = @"D:\kbly538\source\repos\algo-studies\algo-studies\Maps\mapFile.txt";
-MapLoader mapLoader = new MapLoader(mapFilePath);
-
-
-//foreach (KeyValuePair<Tuple<int, int>, Cell> keyValuePair in grid)
-//{
-//	Console.WriteLine(keyValuePair.Key + " " + keyValuePair.Value);
-//}
-
-
-//map.StartBFS(mapTxt, new Cell(1, 1), new Cell(9, 30));
-
-BFS bfs = new BFS(mapLoader);
-
-bfs.StartBFS((1, 1), (262, 1));
+using System.Drawing;
 
 
 
 
 
 
+String rootPath = @"D:\kbly538\source\repos\algo-studies\algo-studies\Maps\";
+String textFileName = "starMap.txt";
+String imageName = "hand-drawn-map.png";
 
+String fullPthToText = rootPath + textFileName;
+String fullPathToImage = rootPath + imageName;
+
+
+
+
+/*
+ * BFS with textMapLoader
+ */
+//MapLoader mapLoader = new MapLoader(fullPthToText);
+//mapLoader.DrawMap();
+//BFS bfs = new BFS(mapLoader);
+//bfs.StartBFS((1, 1), (5, 60));
+
+
+/*
+ * BFS with map from image
+ */
+BitmapMapLoader bml = new BitmapMapLoader(fullPathToImage);
+bml.CreateMapFile(fullPthToText);
+BFS bfs = new BFS(bml);
+
+
+bfs.StartBFS((9, 21), (49,58));
 
 
 
