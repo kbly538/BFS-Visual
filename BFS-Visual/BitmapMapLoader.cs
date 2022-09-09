@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace algo_studies
+namespace bfsvisual
 {
 	public class BitmapMapLoader
 	{
